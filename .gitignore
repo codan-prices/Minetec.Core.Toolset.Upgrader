@@ -1,0 +1,8 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs/*
+/Minetec.Core.Toolset.Upgrader/bin/*
+/Minetec.Core.Toolset.Upgrader/obj/*
+/_ReSharper.Caches/*
