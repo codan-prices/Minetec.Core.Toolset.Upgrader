@@ -40,21 +40,23 @@ namespace Minetec.Core.Toolset.Upgrader
                     var changed = false;
                     var lines = File.ReadAllLines(csproj).ToArray();
 
-                    var state = 0;      // seek "PackageReference..."
-                    var lino = 0;
-                    while (lino < lines.Count())
+                    for (var lino = 0;  lino < lines.Count(); lino++)
                     {
                         var line = lines[lino];
-                        if (state == 0 && line.Trim().StartsWith("<PackageReference Include=\"Minetec")) state = 1;
-                        if (state == 1 && line.Contains("Version"))
+                        if (line.Trim().StartsWith("<PackageReference Include=\"Minetec"))
                         {
-                            line = Regex.Replace(line, "Version=\"([^\"])*\"", $"Version=\"{targetVersion}\"");
-                            line = Regex.Replace(line, "<Version>([^<])*<", $"<Version>{targetVersion}<");
-                            lines[lino] = line;
-                            changed = true;
-                            state = 0;
+                            do
+                            {
+                                if (line.Contains("Version"))
+                                {
+                                    line = Regex.Replace(line, "Version=\"([^\"])*\"", $"Version=\"{targetVersion}\"");
+                                    line = Regex.Replace(line, "<Version>([^<])*<", $"<Version>{targetVersion}<");
+                                    lines[lino] = line;
+                                    changed = true;
+                                    break;
+                                }
+                            } while (lino++ < lines.Count());
                         }
-                        lino++;
                     }
 
                     if (changed)
