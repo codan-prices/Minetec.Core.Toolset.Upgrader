@@ -47,6 +47,7 @@ namespace Minetec.Core.Toolset.Upgrader
                         {
                             do
                             {
+                                line = lines[lino];
                                 if (line.Contains("Version"))
                                 {
                                     line = Regex.Replace(line, "Version=\"([^\"])*\"", $"Version=\"{targetVersion}\"");
