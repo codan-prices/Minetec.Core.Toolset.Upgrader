@@ -55,7 +55,7 @@ namespace Minetec.Core.Toolset.Upgrader
                                     changed = true;
                                     break;
                                 }
-                            } while (lino++ < lines.Count());
+                            } while (++lino < lines.Count());
                         }
                     }
 
