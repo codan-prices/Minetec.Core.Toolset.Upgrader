@@ -40,29 +40,23 @@ namespace Minetec.Core.Toolset.Upgrader
                     var changed = false;
                     var lines = File.ReadAllLines(csproj).ToArray();
 
-                    // Net Core
+                    for (var lino = 0;  lino < lines.Count(); lino++)
                     {
-                        var relevantLines = lines
-                            .Select((content, index) => new { index, content })
-                            .Where(line => line.content.Trim().StartsWith("<PackageReference Include=\"Minetec") && line.content.Trim().EndsWith("/>"));
-
-                        foreach (var line in relevantLines)
+                        var line = lines[lino];
+                        if (line.Trim().StartsWith("<PackageReference Include=\"Minetec"))
                         {
-                            lines[line.index] = Regex.Replace(line.content, "Version=\"([^\"])*\"", $"Version=\"{targetVersion}\"");
-                            if (!changed) changed = true;
-                        }
-                    }
-
-                    // Net Framework
-                    {
-                        var relevantLines = lines
-                            .Select((content, index) => new { index, content })
-                            .Where(line => line.content.Trim().StartsWith("<PackageReference Include=\"Minetec") && line.content.Trim().EndsWith("/>"));
-
-                        foreach (var line in relevantLines)
-                        {
-                            lines[line.index] = Regex.Replace(line.content, "Version=\"([^\"])*\"", $"Version=\"{targetVersion}\"");
-                            if (!changed) changed = true;
+                            do
+                            {
+                                line = lines[lino];
+                                if (line.Contains("Version"))
+                                {
+                                    line = Regex.Replace(line, "Version=\"([^\"])*\"", $"Version=\"{targetVersion}\"");
+                                    line = Regex.Replace(line, "<Version>([^<])*<", $"<Version>{targetVersion}<");
+                                    lines[lino] = line;
+                                    changed = true;
+                                    break;
+                                }
+                            } while (++lino < lines.Count());
                         }
                     }
 
