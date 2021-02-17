@@ -15,6 +15,6 @@ jobs:
         id: nukeeper
         uses: nukeeperdotnet/nukeeper-action@0.1
         with:
-          token: "${{ secrets.NUKEEPER_TOKEN }}"
+          token: "${{ secrets.NUKEEPER_SECRET }}"
 #  token: "${{ secrets.GITUB_TOKEN }}"
         
